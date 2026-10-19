@@ -6,15 +6,26 @@ const PORT = process.env.PORT ||3000;
 app.use(express.static('public'));
 
 // Sample API for resume analysis
-app.get('/analyze', (req, res) => {
-    const plagiarism = Math.floor(Math.random() * 30);
-    const skill = Math.floor(Math.random() * 50 + 50);
-    const trust = Math.floor((skill + (100 - plagiarism)) / 2);
+// Resume analysis API
+app.use(express.json());
+
+app.post('/analyze', (req, res) => {
+    const { resumeText } = req.body;
+
+    if (typeof resumeText !== 'string' || !resumeText.trim()) {
+        return res.status(400).json({
+            success: false,
+            message: 'Please provide resume text for analysis.'
+        });
+    }
+
+    const wordCount = resumeText.trim().split(/\s+/).length;
 
     res.json({
-        plagiarism: plagiarism + "%",
-        skill: skill + "%",
-        trust: trust + "%"
+        success: true,
+        message: 'Resume text received successfully.',
+        wordCount: wordCount,
+        status: 'Ready for further analysis'
     });
 });
 
