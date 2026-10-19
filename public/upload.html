@@ -1,29 +1,41 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Resume - TrustHire</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>TrustHire</h1>
+        <p>Resume Verification Portal</p>
+    </header>
 
-<header>
-    <h1>TrustHire</h1>
-    <p>Resume Verification Portal</p>
-</header>
+    <div class="container">
+        <h2>Analyze Your Resume</h2>
 
-<div class="container">
-    <h2>Upload Your Resume</h2>
+        <form id="resumeForm">
+            <label for="resumeText">Paste your resume text:</label>
+            <textarea id="resumeText" rows="10"
+                placeholder="Paste your resume content here..."
+                required></textarea>
+            <br><br>
+            <button type="submit">Analyze Resume</button>
+        </form>
 
-    <form action="result.html">
-        <input type="file" required><br><br>
-        <button type="submit">Analyze Resume</button>
-    </form>
+        <p id="status"></p>
+        <p>Word count: <span id="wordCount">0</span></p>
 
-    <br>
-    <a href="index.html">Back to Home</a>
-</div>
-<footer>
-    <p>© 2026 TrustHire | AI-Based Skill Authentication Platform</p>
-</footer>
+        <br>
+        <a href="index.html">Back to Home</a>
+    </div>
+
+    <footer>
+        <p>© 2026 TrustHire | AI-Based Skill Authentication Platform</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
