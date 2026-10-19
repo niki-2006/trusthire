@@ -1,38 +1,42 @@
 
-async function fetchScores() {
-    const resumeText = document.getElementById("resumeText");
+const resumeForm = document.getElementById("resumeForm");
 
-    if (!resumeText || !resumeText.value.trim()) {
-        alert("Please enter your resume text first.");
-        return;
-    }
+if (resumeForm) {
+    resumeForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-    try {
-        const response = await fetch("/analyze", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                resumeText: resumeText.value
-            })
-        });
+        const resumeText = document.getElementById("resumeText").value.trim();
+        const status = document.getElementById("status");
+        const wordCount = document.getElementById("wordCount");
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message || "Resume analysis failed.");
+        if (!resumeText) {
+            status.textContent = "Please enter your resume text.";
             return;
         }
 
-        const result = document.getElementById("wordCount");
-        if (result) {
-            result.innerText = data.wordCount;
-        }
+        status.textContent = "Analyzing resume...";
 
-        alert("Resume text received successfully!");
-    } catch (error) {
-        console.error("Error analyzing resume:", error);
-        alert("Could not connect to the server. Please start the backend.");
-    }
+        try {
+            const response = await fetch("/analyze", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ resumeText: resumeText })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Analysis failed.");
+            }
+
+            wordCount.textContent = data.wordCount;
+            status.textContent = data.message;
+        } catch (error) {
+            status.textContent =
+                "Could not connect to the backend. Start the server and try again.";
+            console.error(error);
+        }
+    });
 }
